@@ -1,0 +1,54 @@
+# Default deny: ignore everything
+*
+
+# Always keep git config files
+!.gitignore
+!.gitattributes
+
+# Keep top-level docs (safe metadata)
+!README.md
+
+# -------------------------
+# Code allowlist
+# -------------------------
+
+# scripts
+!scripts/
+!scripts/**/*.py
+!scripts/requirements.txt
+
+# legacy/original code
+!源代码/
+!源代码/**/*.py
+
+# resnet experiment code
+!深度学习模型图片修复/
+!深度学习模型图片修复/resnet_experiment/
+!深度学习模型图片修复/resnet_experiment/**/*.py
+
+# Optional: keep lightweight structure note
+!doc/
+!doc/REPO_STRUCTURE.md
+
+# -------------------------
+# Explicit sensitive/generated blocks
+# -------------------------
+my_folder/**
+湖南大学/**
+results/**
+深度学习模型图片修复/resnet_experiment/output/**
+
+# Notebook and binary artifacts (avoid accidental leak)
+*.ipynb
+*.csv
+*.json
+*.npy
+*.png
+*.tiff
+*.zip
+*.h5
+*.hdf5
+*.pt
+*.pth
+*.log
+*.tmp
