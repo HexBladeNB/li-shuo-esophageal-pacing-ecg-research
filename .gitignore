@@ -8,6 +8,7 @@
 # Keep top-level docs (safe metadata)
 !README.md
 !README_EN.md
+!README_ZH.md
 
 # -------------------------
 # Code allowlist
