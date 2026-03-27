@@ -1,43 +1,41 @@
-# Li Shuo Research Project: Esophageal Pacing ECG Analysis for SVT Classification
+# 李烁博士研究课题：食道调搏心电信号的 SVT 分型研究
 
 [English Version](README_EN.md)
 
-[![Code-Only Public Release](https://img.shields.io/badge/Release-Code--Only-success)](#2-scope-of-this-public-repository)
-[![Clinical Research](https://img.shields.io/badge/Domain-Clinical%20ECG-blue)](#1-scientific-context)
-[![Pipeline](https://img.shields.io/badge/Pipeline-Reproducible-informational)](#6-recommended-execution-order)
-[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)](#5-installation)
-[![Privacy](https://img.shields.io/badge/Data-Privacy%20Protected-critical)](#9-data-governance-and-privacy)
+[![Code-Only Public Release](https://img.shields.io/badge/Release-Code--Only-success)](#2-公开仓库范围)
+[![Clinical Research](https://img.shields.io/badge/Domain-Clinical%20ECG-blue)](#1-研究背景)
+[![Pipeline](https://img.shields.io/badge/Pipeline-Reproducible-informational)](#7-推荐执行顺序)
+[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)](#6-环境安装)
+[![Privacy](https://img.shields.io/badge/Data-Privacy%20Protected-critical)](#9-数据治理与隐私声明)
 
-A reproducible machine-learning and deep-learning codebase for multi-lead ECG analysis in the context of **esophageal pacing** and supraventricular tachycardia (SVT) phenotype classification.
+本仓库用于复现与展示：基于**食道调搏（Esophageal Pacing）**场景下的多导联心电（ECG）分析流程，覆盖特征工程机器学习基线与深度学习实验脚本，服务于室上性心动过速（SVT）相关分型研究。
 
-## 1. Scientific Context
-This repository supports a clinical research workflow focused on arrhythmia discrimination from esophageal pacing-related ECG recordings.
+## 1. 研究背景
+该项目围绕临床心电研究流程，目标是提升食道调搏相关 ECG 数据在心律失常分型任务中的可解释性与可复现性。
 
-### Clinical/Methodological Targets
-- Patient-level split verification to prevent data leakage
-- Feature-engineered ML baselines (Random Forest, XGBoost)
-- Deep-learning experiment scripts (ResNet-based and legacy pipeline)
-- Manuscript-facing figure/table regeneration utilities
+### 临床与方法目标
+- 进行患者级训练/测试隔离验证，避免数据泄漏
+- 构建特征工程 ML 基线（Random Forest、XGBoost）
+- 提供深度学习实验与图表重绘脚本（ResNet 相关）
+- 支持论文与审稿回复场景下的方法学复现
 
-### Research Tasks
-- **3-class classification**: AVNRT / AVRT / N
-- **4-class classification**: AVNRT / AVRT-L / AVRT-R / N
+### 分类任务
+- **3 分类**：AVNRT / AVRT / N
+- **4 分类**：AVNRT / AVRT-L / AVRT-R / N
 
-## 2. Scope of This Public Repository
-This public repository is intentionally **code-first** and **privacy-preserving**.
+## 2. 公开仓库范围
+本公开仓库采用“**代码优先 + 隐私优先**”策略。
 
-Included:
-- Source code and reproducible pipeline scripts
-- Lightweight technical documentation
+包含：
+- 方法代码与复现实验脚本
+- 轻量级项目文档
 
-Excluded:
-- Raw ECG datasets
-- Patient-identifiable artifacts
-- Generated local results and derivative files
+不包含：
+- 原始 ECG 数据
+- 患者可识别信息相关中间文件
+- 本地产生的结果文件（图、表、缓存等）
 
-This design follows data minimization and publication-readiness principles.
-
-## 3. Repository Layout
+## 3. 仓库结构
 ```text
 .
 |-- scripts/
@@ -49,48 +47,49 @@ This design follows data minimization and publication-readiness principles.
 |   |-- paths.py
 |   `-- requirements.txt
 |-- 源代码/
-|   `-- *.py (legacy deep-learning source)
+|   `-- *.py (历史深度学习代码)
 |-- 深度学习模型图片修复/
 |   `-- resnet_experiment/
-|       `-- *.py (retraining + figure/table regeneration)
+|       `-- *.py (重训与图表生成脚本)
 |-- doc/
 |   `-- REPO_STRUCTURE.md
 |-- .gitignore
-`-- README.md
+|-- README.md
+`-- README_EN.md
 ```
 
-## 4. End-to-End Pipeline
+## 4. 端到端流程
 ```mermaid
 flowchart LR
-    A[Patient-Level Data Sources] --> B[Patient Split Verification]
-    B --> C[Unified Data Pipeline]
-    C --> D[Feature Engineering 169-D]
-    D --> E1[Random Forest Baseline]
-    D --> E2[XGBoost Baseline]
-    C --> F[ResNet Experiment Scripts]
-    E1 --> G[Metrics + Curves + Tables]
+    A[患者级数据源] --> B[患者切分验证]
+    B --> C[统一数据管道]
+    C --> D[特征工程 169 维]
+    D --> E1[随机森林基线]
+    D --> E2[XGBoost 基线]
+    C --> F[ResNet 实验脚本]
+    E1 --> G[指标与图表输出]
     E2 --> G
     F --> G
 ```
 
-## 5. Methodological Highlights
-### A. Patient-level isolation audit
-`verify_patient_split.py` audits train/test boundaries at patient level and reports overlap diagnostics.
+## 5. 方法学要点
+### A. 患者级隔离验证
+`verify_patient_split.py` 用于审计训练/测试集合在患者维度上的隔离情况。
 
-### B. Feature engineering (per ECG segment)
-`feature_engineering.py` extracts **169 features**:
-- Time-domain: 10 features x 13 leads
-- Frequency-domain: 3 features x 13 leads
+### B. 特征工程
+`feature_engineering.py` 为每个 ECG 片段提取 **169 维特征**：
+- 时域：10 x 13 导联
+- 频域：3 x 13 导联
 
-### C. Baseline modeling
-- `train_rf.py`: Random Forest + grid search + stratified CV
-- `train_xgboost.py`: XGBoost + grid search + stratified CV + feature importance
+### C. 基线建模
+- `train_rf.py`：随机森林 + 网格搜索 + 分层交叉验证
+- `train_xgboost.py`：XGBoost + 网格搜索 + 分层交叉验证 + 特征重要性
 
-### D. Deep-learning support
-- Legacy scripts under `源代码/`
-- ResNet retraining and figure/table scripts under `深度学习模型图片修复/resnet_experiment/`
+### D. 深度学习支持
+- `源代码/`：历史深度学习脚本
+- `深度学习模型图片修复/resnet_experiment/`：ResNet 重训与论文图表脚本
 
-## 6. Installation
+## 6. 环境安装
 ```bash
 python -m venv .venv
 # Windows PowerShell
@@ -98,8 +97,8 @@ python -m venv .venv
 pip install -r scripts/requirements.txt
 ```
 
-## 7. Recommended Execution Order
-Run from project root:
+## 7. 推荐执行顺序
+在项目根目录运行：
 ```bash
 python scripts/verify_patient_split.py
 python scripts/feature_engineering.py
@@ -107,33 +106,33 @@ python scripts/train_rf.py --fast
 python scripts/train_xgboost.py --fast
 ```
 
-For full hyperparameter search, remove `--fast`.
+如需完整超参数搜索，可去掉 `--fast`。
 
-## 8. Reproducibility Checklist
-- Fixed random seeds in baseline training (`random_state=42`)
-- Stratified cross-validation in model selection
-- Centralized path management in `scripts/paths.py`
-- Deterministic pipeline order for reporting
+## 8. 可复现性清单
+- 基线训练设置固定随机种子（`random_state=42`）
+- 使用分层交叉验证进行模型选择
+- 路径集中管理于 `scripts/paths.py`
+- 流程顺序可稳定复现
 
-## 9. Data Governance and Privacy
-This repository does **not** publish:
-- Raw CSV ECG datasets
-- Intermediate files containing patient identifiers
-- Generated local result artifacts
+## 9. 数据治理与隐私声明
+本仓库不会公开：
+- 原始 CSV 心电数据
+- 含患者标识信息的中间文件
+- 本地生成的结果产物
 
-Any clinical data use must follow local IRB/ethics and institutional data-governance policies.
+涉及临床数据使用时，请遵守所属机构伦理审查（IRB）与数据治理规范。
 
-## 10. Publication-Facing Positioning
-This codebase is organized to support:
-- Transparent method reporting
-- Reviewer-facing baseline comparisons
-- Reproducible manuscript figure/table regeneration
+## 10. 论文与审稿支持定位
+当前结构可直接支持：
+- 方法透明化描述
+- 审稿意见回复中的基线对比
+- 图表与结论的可复现实验链路
 
-## 11. Citation
-If you use this repository in academic work, please cite the associated manuscript (to be updated upon publication).
+## 11. 引用
+若本仓库用于学术研究，请在论文中引用对应成果（论文发表后补充正式引用信息）。
 
-## 12. Acknowledgment
-Project lead: **Dr. Li Shuo**
+## 12. 致谢
+课题负责人：**李烁博士**
 
-## 13. Contact
-For technical issues, open a GitHub issue in this repository.
+## 13. 联系方式
+如有技术问题，欢迎通过 GitHub Issue 联系。
