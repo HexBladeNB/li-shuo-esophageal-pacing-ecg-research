@@ -55,7 +55,7 @@
 |   `-- REPO_STRUCTURE.md
 |-- .gitignore
 |-- README.md
-`-- README_EN.md
+`-- README_ZH.md
 ```
 
 ## 4. 端到端流程

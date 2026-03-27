@@ -1,6 +1,6 @@
 # Li Shuo Research Project: Esophageal Pacing ECG Analysis for SVT Classification
 
-Language: **English** | [简体中文](README_ZH.md) | [English Mirror](README_EN.md)
+Language: **English** | [简体中文](README_ZH.md)
 
 <details>
 <summary><strong>中文速览（点击展开/收起）</strong></summary>
@@ -67,7 +67,6 @@ This design follows data minimization and publication-readiness principles.
 |   `-- REPO_STRUCTURE.md
 |-- .gitignore
 |-- README.md
-|-- README_EN.md
 `-- README_ZH.md
 ```
 
