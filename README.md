@@ -1,18 +1,37 @@
 # Li Shuo Research Project: Esophageal Pacing ECG Analysis for SVT Classification
 
+[![Code-Only Public Release](https://img.shields.io/badge/Release-Code--Only-success)](#2-scope-of-this-public-repository)
+[![Clinical Research](https://img.shields.io/badge/Domain-Clinical%20ECG-blue)](#1-scientific-context)
+[![Pipeline](https://img.shields.io/badge/Pipeline-Reproducible-informational)](#6-recommended-execution-order)
+[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)](#5-installation)
+[![Privacy](https://img.shields.io/badge/Data-Privacy%20Protected-critical)](#9-data-governance-and-privacy)
+
 A reproducible machine-learning and deep-learning codebase for multi-lead ECG analysis in the context of **esophageal pacing** and supraventricular tachycardia (SVT) phenotype classification.
 
 ## 1. Scientific Context
-This repository supports a clinical research workflow focused on arrhythmia discrimination from esophageal pacing-related ECG recordings. The project includes:
-- Patient-level split verification to prevent leakage
-- Feature-engineered machine-learning baselines (Random Forest, XGBoost)
-- Deep-learning experimentation scripts (ResNet-based and legacy notebook pipelines)
-- Figure/table regeneration utilities for manuscript and rebuttal workflows
+This repository supports a clinical research workflow focused on arrhythmia discrimination from esophageal pacing-related ECG recordings.
+
+### Clinical/Methodological Targets
+- Patient-level split verification to prevent data leakage
+- Feature-engineered ML baselines (Random Forest, XGBoost)
+- Deep-learning experiment scripts (ResNet-based and legacy pipeline)
+- Manuscript-facing figure/table regeneration utilities
+
+### Research Tasks
+- **3-class classification**: AVNRT / AVRT / N
+- **4-class classification**: AVNRT / AVRT-L / AVRT-R / N
 
 ## 2. Scope of This Public Repository
-This public repository is intentionally **code-first**:
-- Included: source code, reproducible pipeline scripts, project documentation
-- Excluded: raw ECG data, patient-identifiable artifacts, generated result files
+This public repository is intentionally **code-first** and **privacy-preserving**.
+
+Included:
+- Source code and reproducible pipeline scripts
+- Lightweight technical documentation
+
+Excluded:
+- Raw ECG datasets
+- Patient-identifiable artifacts
+- Generated local results and derivative files
 
 This design follows data minimization and publication-readiness principles.
 
@@ -38,24 +57,38 @@ This design follows data minimization and publication-readiness principles.
 `-- README.md
 ```
 
-## 4. Methodological Pipeline
-### Step A: Patient-level isolation check
+## 4. End-to-End Pipeline
+```mermaid
+flowchart LR
+    A[Patient-Level Data Sources] --> B[Patient Split Verification]
+    B --> C[Unified Data Pipeline]
+    C --> D[Feature Engineering 169-D]
+    D --> E1[Random Forest Baseline]
+    D --> E2[XGBoost Baseline]
+    C --> F[ResNet Experiment Scripts]
+    E1 --> G[Metrics + Curves + Tables]
+    E2 --> G
+    F --> G
+```
+
+## 5. Methodological Highlights
+### A. Patient-level isolation audit
 `verify_patient_split.py` audits train/test boundaries at patient level and reports overlap diagnostics.
 
-### Step B: Feature engineering
-`feature_engineering.py` extracts **169 features per segment**:
+### B. Feature engineering (per ECG segment)
+`feature_engineering.py` extracts **169 features**:
 - Time-domain: 10 features x 13 leads
 - Frequency-domain: 3 features x 13 leads
 
-### Step C: ML baselines
-- `train_rf.py`: Random Forest with grid search and stratified CV
-- `train_xgboost.py`: XGBoost with grid search, stratified CV, and feature-importance outputs
+### C. Baseline modeling
+- `train_rf.py`: Random Forest + grid search + stratified CV
+- `train_xgboost.py`: XGBoost + grid search + stratified CV + feature importance
 
-### Step D: Deep-learning support
-- Legacy code under `源代码/`
-- ResNet experiment and figure/table utilities under `深度学习模型图片修复/resnet_experiment/`
+### D. Deep-learning support
+- Legacy scripts under `源代码/`
+- ResNet retraining and figure/table scripts under `深度学习模型图片修复/resnet_experiment/`
 
-## 5. Installation
+## 6. Installation
 ```bash
 python -m venv .venv
 # Windows PowerShell
@@ -63,7 +96,7 @@ python -m venv .venv
 pip install -r scripts/requirements.txt
 ```
 
-## 6. Typical Execution Order
+## 7. Recommended Execution Order
 Run from project root:
 ```bash
 python scripts/verify_patient_split.py
@@ -72,31 +105,33 @@ python scripts/train_rf.py --fast
 python scripts/train_xgboost.py --fast
 ```
 
-Use full grid search by removing `--fast`.
+For full hyperparameter search, remove `--fast`.
 
-## 7. Reproducibility Notes
-- Most training scripts use fixed random seed (`random_state=42`)
-- Stratified cross-validation is applied in baseline model selection
-- Paths are centralized in `scripts/paths.py`
+## 8. Reproducibility Checklist
+- Fixed random seeds in baseline training (`random_state=42`)
+- Stratified cross-validation in model selection
+- Centralized path management in `scripts/paths.py`
+- Deterministic pipeline order for reporting
 
-## 8. Data Governance and Privacy
+## 9. Data Governance and Privacy
 This repository does **not** publish:
 - Raw CSV ECG datasets
 - Intermediate files containing patient identifiers
-- Generated local results and figures
+- Generated local result artifacts
 
-Any clinical data use must follow local IRB/ethics and hospital data-governance policies.
+Any clinical data use must follow local IRB/ethics and institutional data-governance policies.
 
-## 9. Publication-Facing Positioning
-The codebase is structured to support:
+## 10. Publication-Facing Positioning
+This codebase is organized to support:
 - Transparent method reporting
-- Reviewer-facing ablation/baseline comparisons
-- Reproducible manuscript figure and table regeneration
+- Reviewer-facing baseline comparisons
+- Reproducible manuscript figure/table regeneration
 
-## 10. Citation
-If you use this repository in academic work, please cite the associated manuscript (details to be added upon publication).
+## 11. Citation
+If you use this repository in academic work, please cite the associated manuscript (to be updated upon publication).
 
-## 11. Contact
+## 12. Acknowledgment
 Project lead: **Dr. Li Shuo**
 
+## 13. Contact
 For technical issues, open a GitHub issue in this repository.
