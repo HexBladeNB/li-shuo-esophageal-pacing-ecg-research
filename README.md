@@ -1,5 +1,7 @@
 # Li Shuo Research Project: Esophageal Pacing ECG Analysis for SVT Classification
 
+[English Version](README_EN.md)
+
 [![Code-Only Public Release](https://img.shields.io/badge/Release-Code--Only-success)](#2-scope-of-this-public-repository)
 [![Clinical Research](https://img.shields.io/badge/Domain-Clinical%20ECG-blue)](#1-scientific-context)
 [![Pipeline](https://img.shields.io/badge/Pipeline-Reproducible-informational)](#6-recommended-execution-order)
